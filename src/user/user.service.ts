@@ -4,6 +4,8 @@ import { Model } from 'mongoose';
 import { UserDocument } from './user.schema';
 import { UserRegisterDto } from './dto/user.register.dto';
 import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
+import { UserLoginDto } from './dto/user.login.dto';
 
 @Injectable()
 export class UserService {
@@ -32,5 +34,26 @@ export class UserService {
       password: hashPassword,
     });
     return user._id;
+  }
+
+  async login(userDto: UserLoginDto) {
+    const user = await this.userModel.findOne({ email: userDto.email });
+    if (!user) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+    const isValidPassword = await bcrypt.compare(
+      userDto.password,
+      user.password,
+    );
+    if (!isValidPassword) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: '24h',
+    });
+    return {
+      token,
+      user: { ...user.toObject(), password: null },
+    };
   }
 }
