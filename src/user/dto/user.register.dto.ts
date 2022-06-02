@@ -1,5 +1,5 @@
 export class UserRegisterDto {
-  readonly nickname: string;
+  readonly nickName: string;
   readonly email: string;
-  readonly password: string
+  readonly password: string;
 }

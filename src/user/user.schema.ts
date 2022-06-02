@@ -10,10 +10,13 @@ export class User {
     unique: true,
     minlength: 3,
   })
-  nickname: string;
+  nickName: string;
 
   @Prop()
-  name: string;
+  firstName: string;
+
+  @Prop()
+  lastName: string;
 
   @Prop({
     required: [true, 'Email is required'],
@@ -24,11 +27,14 @@ export class User {
   email: string;
 
   @Prop()
-  age: number;
+  dateOfBirth: string;
+
+  @Prop()
+  sex: string;
 
   @Prop({
     required: [true, 'Password is required'],
-    minlength: 6,
+    minlength: 4,
   })
   password: string;
 

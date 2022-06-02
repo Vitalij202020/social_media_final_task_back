@@ -20,7 +20,7 @@ export class UserService {
       );
     }
     const isNickNameExist = await this.userModel.findOne({
-      nickname: userDto.nickname,
+      nickName: userDto.nickName,
     });
     if (isNickNameExist) {
       throw new HttpException(
